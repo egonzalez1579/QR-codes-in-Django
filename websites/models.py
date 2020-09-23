@@ -15,13 +15,8 @@ class Website(models.Model):
     def save(self, *args, **kwargs):
         qrcode_img = qrcode.make(self.name)
         canvas = Image.new('RGB', (290, 290), 'white')
-        draw = ImageDraw.Draw(canvas)
         canvas.paste(qrcode_img)
-
-        # You don't need the "+", you can do it like this
-        # Sorry, I went too fast
         fname = f'qr_code-{self.name}.png'
-
         buffer = BytesIO()
         canvas.save(buffer,'PNG')
         self.qr_code.save(fname, File(buffer), save=False)
